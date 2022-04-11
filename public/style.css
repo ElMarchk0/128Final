@@ -1,0 +1,45 @@
+#navbar-btn {
+  margin: 0em 3em auto;
+}
+.btn-primary {
+  margin: 2em auto;
+}
+#navbar {
+  overflow: hidden;
+  position: fixed; 
+  top: 0; 
+  width: 100%; 
+  z-index: 1; 
+}
+
+.container {
+  position: relative;
+}
+
+.card-columns{
+  display: inline-block;
+  column-count: 3;
+  column-gap: 1em;
+  padding: 2em;
+}
+
+.card{
+  margin: 2em;
+  break-inside: avoid
+}
+
+@media (max-width: 680px), screen and (orientation: portrait) { 
+  .card-columns{
+    display: inline-block;
+    column-count: 1;
+    column-gap: 1em;
+    padding: 1em;
+  }
+  #navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    
+  }
+ }
