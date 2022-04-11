@@ -4,7 +4,6 @@ const app = express();
 const PORT = 9000
 
 app.use(express.static("public"));
-app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 
 
 app.get('/', (res) => {
