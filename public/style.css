@@ -33,6 +33,14 @@
   break-inside: avoid
 }
 
+#bottom-canvas{
+  margin: 2em 0 1em 0;
+}
+
+#checkout{
+  margin: 2em;
+}
+
 @media (max-width: 680px), screen and (orientation: portrait) { 
   .card-columns{
     display: inline-block;

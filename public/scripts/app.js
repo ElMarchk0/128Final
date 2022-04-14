@@ -38,8 +38,7 @@ $(document).ready(() => {
   })
 
   //Create the cart list item
-  const createCartItem = (item) => { 
-     
+  const createCartItem = (item) => {      
     let cartItem = `
       <li class="list-group-item">
         <div class="row">
@@ -50,15 +49,14 @@ $(document).ready(() => {
             <h4>${item.title}</h4>
             <p>${item.description}</p>
             <p>Price: ${item.price}</p>
-            <input type="number" id="quantity-${item.id}" name="products[${item.id}][quantity]" data-price="${item.price}" class="form-control input-sm product-quantity" min="1" value="1">
+            
             <button id="delete-btn" class="btn btn-danger btn-sm">Delete</button>
           </div>
         </div>
       </li>
     `;  
     $("#cart-items").append(cartItem);
-    cartItems.push(item)
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    
     const deleteBtns = document.querySelectorAll('#delete-btn');
     deleteBtns.forEach((btn, index) => {
       btn.addEventListener('click', (e) => {
@@ -66,6 +64,7 @@ $(document).ready(() => {
         cartItems.splice(index, 1);
         localStorage.removeItem('cartItems', JSON.stringify(cartItems));
         $(btn).parent().parent().parent().remove();
+        displaySubtotal();
       })
     })
     
@@ -84,13 +83,24 @@ $(document).ready(() => {
     
   //Add to Cart
   const addToCart = (item) => {
-    if(cartItems.includes(item)) {
-      console.log('Item already in cart ', item.id);
-      let inputName = `#quantity-${item.id}`;
-      let quantity = Number($(inputName).val()) + 1;
-      $(inputName).val(quantity);      
-    } else { 
+    
+    cartItems.push(item)
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
     createCartItem(item)
-    }
+    displaySubtotal()
   }
+
+  //get subtotal
+  const getSubtotal = () => {
+    let subtotal = 0;
+    cartItems.forEach((item) => {
+      subtotal += item.price;
+    })
+    return subtotal;
+  }
+
+  const displaySubtotal = () => {
+    $("#subtotal").text(`Subtotal: ${getSubtotal().toFixed(2)}`);
+  }
+  displaySubtotal()
 }) 
