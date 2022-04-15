@@ -5,12 +5,12 @@
   margin: 2em auto;
 }
 
-#delete-btn{
+#clearcart{
   margin: 1em auto;
 }
 
 #navbar {
-  overflow: hidden;
+  
   position: fixed; 
   top: 0; 
   width: 100%; 
@@ -40,6 +40,16 @@
 #checkout{
   margin: 2em;
 }
+
+#myModal{
+  z-index: 9999
+ }
+
+.modal-open .offcanvas-content-wrap {
+  -webkit-transform:none;
+     transform: none;
+     position: static;
+ }
 
 @media (max-width: 680px), screen and (orientation: portrait) { 
   .card-columns{
