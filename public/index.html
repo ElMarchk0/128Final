@@ -48,48 +48,55 @@
                 <label for="validationDefault02" class="form-label">Email</label>
                 <input type="text" class="form-control" id="email" value="" required>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <label for="validationDefault03" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" required>
+                <input type="text" class="form-control" id="address" value="" required>
+              </div>
+              <div class="col-md-6">
+                <label for="validationDefault03" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" value="" required>
               </div>
               <div class="col-md-4">
                 <label for="validationDefault03" class="form-label">City</label>
-                <input type="text" class="form-control" id="city" required>
+                <input type="text" class="form-control" id="city" value="" required>
               </div>
               <div class="col-md-4">
                 <label for="validationDefault05" class="form-label">Postal Code</label>
-                <input type="text" class="form-control" id="postal" required>
+                <input type="text" class="form-control" id="postal" value="" required>
               </div>
               <div class="col-md-4">
                 <label for="validationDefault04" class="form-label">Province/Territory</label>
-                <select class="form-select" id="province-select" required>
+                <select class="form-select" id="province-select" value="" required>
                   <option selected disabled value="">Choose...</option>
-                  <option>Alberta</option>
-                  <option>British Columbia</option>
-                  <option>Manitoba</option>
-                  <option>New Brunswick</option>
-                  <option>Newfoundland/Labrador</option>
-                  <option>Nova Scotia</option>
-                  <option>Ontario</option>
-                  <option>Prince Edward Isl.</option>
-                  <option>Quebec</option>
-                  <option>Saskatchewan</option>
-                  <option>North West Territories</option>
-                  <option>Nunavut</option>
-                  <option>Yukon</option>
+                  <option>AB</option>
+                  <option>BC</option>
+                  <option>MB</option>
+                  <option>NB</option>
+                  <option>NF</option>
+                  <option>NS</option>
+                  <option>ON</option>
+                  <option>PE</option>
+                  <option>QC</option>
+                  <option>SA</option>
+                  <option>NW</option>
+                  <option>NU</option>
+                  <option>YU</option>
                 </select>
               </div>          
               <!-- Payments details -->
               <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body payment-card-body"> <span class="font-weight-normal card-text">Card Number</span>
-                    <div class="input"> <i class="fa fa-credit-card"></i> <input type="text" class="form-control" placeholder="0000 0000 0000 0000"> </div>
+                    <div class="input"> <i class="fa fa-credit-card"></i> <input type="text" id="card-number" class="form-control" value="" placeholder="0000 0000 0000 0000"> </div>
                     <div class="row mt-3 mb-3">
-                        <div class="col-md-6"> <span class="font-weight-normal card-text">Expiry Date</span>
-                            <div class="input"> <i class="fa fa-calendar"></i> <input type="text" class="form-control" placeholder="MM/YY"> </div>
-                        </div>
-                        <div class="col-md-6"> <span class="font-weight-normal card-text">CVC/CVV</span>
-                            <div class="input"> <i class="fa fa-lock"></i> <input type="text" class="form-control" placeholder="000"> </div>
-                        </div>
+                    <div class="col-md-34"> <span class="font-weight-normal card-text">Expiry Year</span>
+                        <div class="input"> <i class="fa fa-calendar"></i> <input type="text" class="form-control" id="card-exp-year" value="" placeholder="YYYY"> </div>
+                    </div>
+                    <div class="col-md-4"> <span class="font-weight-normal card-text">Expiry Month</span>
+                      <div class="input"> <i class="fa fa-calendar"></i> <input type="text" class="form-control" id="card-exp-month" value="" placeholder="MM"> </div>
+                  </div>
+                    <div class="col-md-3"> <span class="font-weight-normal card-text">CVC/CVV</span>
+                        <div class="input"> <i class="fa fa-lock"></i> <input type="text" class="form-control" id="card-cvv" value="" placeholder="000"> </div>
+                    </div>
                     </div> <span class="text-muted certificate-text"><i class="fa fa-lock"></i> Your transaction is secured with ssl certificate</span>
                 </div>
             </div>
@@ -131,7 +138,7 @@
       <div id="checkout">
         <p id="subtotal"></p>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" id="checkOutBtn">
           <i class="fa-solid fa-cart-shopping-fast"></i> CheckOut
         </button>
       </div>       

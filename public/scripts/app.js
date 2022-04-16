@@ -6,7 +6,7 @@ $(document).ready(() => {
  });
   
   const fakeStoreApi = 'https://fakestoreapi.com/products';
-  const postPaymentURL = 'http://localhost:3000/payment';
+  const postPaymentURL = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/';
   
   const getProducts = async() => {
     const res = await axios.get(fakeStoreApi);
@@ -102,31 +102,10 @@ $(document).ready(() => {
       displaySubtotal();
     })
   }
-    
-  //Add to Cart
-  const addToCart = (item) => {    
-    cartItems.push(item)
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    createCartItem(item)
-    displaySubtotal()
-  }
-
-  const emptyCart = () => {
-    $("#cart-items").empty();
-    cartItems = []
-    localStorage.clear();
-    displaySubtotal();
-  }
-  
-  $("#clearcart").on('click', (e) => {
-    e.preventDefault();
-    emptyCart();
-  })
 
   const displayItemsCheckOut = () => { 
     cartItems.forEach((item) => {
-      $("#items-check").append(`
-        
+      $("#items-check").append(`        
         <ul>
           <li class="list-group-item">
             <div class="row">
@@ -141,7 +120,28 @@ $(document).ready(() => {
     })
   }
   displayItemsCheckOut();
+    
+  //Add to Cart
+  const addToCart = (item) => {    
+    cartItems.push(item)
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    createCartItem(item)
+    displaySubtotal()
+  }
 
+  const emptyCart = () => {
+    $("#cart-items").empty();
+    $("#items-check").empty();
+    cartItems = []
+    localStorage.clear();
+    displaySubtotal();
+    displayItemsCheckOut();
+  }
+  
+  $("#clearcart").on('click', (e) => {
+    e.preventDefault();
+    emptyCart();
+  })  
 
   const getTotalPrice = () => {
     const subtotal = getSubtotal();
@@ -166,21 +166,101 @@ $(document).ready(() => {
     return total;
   }
   getTotalPrice();
-  
-  const validateForm = () => {
-    const fname = $("#name").val();
-    const lname = $("#lastname").val();
-    const email = $("#email").val();
-    const postcode = $("#postal").val();
 
+  $("#checkOutBtn").on('click', (e) => {
+    e.preventDefault();
+    displayItemsCheckOut();
+    getTotalPrice();    
+  })
+  //Collect order info for json payload  
+   
+  const postPurchase = async () => {
+    const currency = "cad";
+    const country = "ca";
+    const province = $("#province-select").val();
+    const city = $("#city").val();
+    const firstName = $("#fname").val();
+    const lastName = $("#lname").val();
+    const email = $("#email").val();
+    const phone = $("#phone").val();
+    const postal = $("#postal").val();
+    const address = $("#address").val();
+    const card_number = $("#card-number").val();
+    const cardCvv = $("#card-cvv").val();
+    const expiry_month = $("#card-exp-month").val();
+    const expiry_year = $("#card-exp-year").val();
+
+    const payload = {
+      amount: getTotalPrice(),
+      card_number: card_number,
+      security_code: cardCvv,
+      expiry_month: expiry_month,
+      expiry_year: expiry_year,
+      currency: currency,
+      billing: {
+        first_name: firstName,
+        last_name: lastName,
+        address_1: address,
+        city: city,
+        province: province,
+        country: country,
+        postal: postal,
+        phone: phone,
+        email: email,
+      },
+      shipping: {
+        first_name: firstName,
+        last_name: lastName,
+        address_1: address,
+        city: city,
+        province: province,
+        country: country,
+        postal: postal,
+      }
+    }
+    const res = await fetch(postPaymentURL, payload, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify(payload)
+    });
+    console.log(payload)
+    const data = res.json();
+    console.log(data);
+  }
+    
+  const validateForm = () => {
+    const firstName = $("#fname").val();
+    const lastName = $("#lastname").val();
+    const email = $("#email").val();
+    const phone = $("#phone").val();
+    const postal = $("#postal").val();
+    const address = $("#address").val();
+    const card_number = $("#card-number").val();
+    const cardCvv = $("#card-cvv").val();
+    const expiry_month = $("#card-exp-month").val();
+    const expiry_year = $("#card-exp-year").val();
+    
     const nameRX = /[a-zA-Z]/;
     const emailRX = /(\w\.?)+@[\w\.-]+\.\w{2,4}/;
     const postalRX = /[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+    const cardNumberRX = /\d{16}/;
+    const cardCvvRX = /\d{3}$/;
+    const cardExpYearRX = /\d{4}$/;
+    const cardExpMonthRX = /\d{2}$/;
 
-    const lnameTest = nameRX.test(lname);
-    const fnameTest = nameRX.test(fname);
+    const fnameTest = nameRX.test(firstName);
+    const lnameTest = nameRX.test(lastName);
     const emailTest = emailRX.test(email);
-    const postalTest = postalRX.test(postcode);
+    const postalTest = postalRX.test(postal);
+    const cardNumberTest = cardNumberRX.test(card_number);
+    const cardCvvTest = cardCvvRX.test(cardCvv);
+    const cardExpYearTest = cardExpYearRX.test(expiry_year);
+    const cardExpMonthTest = cardExpMonthRX.test(expiry_month);
 
     if (!fnameTest) {
       return alert("Name not valid");
@@ -194,86 +274,29 @@ $(document).ready(() => {
     if (!postalTest) {
       return alert("Postal code not valid");
     }
-  
-    //If form submission successful
-    if(lnameTest && fnameTest && emailTest && postalTest){
-      return alert('Payement successful');
-    }
-  }
-
-  const validatePayment = () => {
-    const cardNumber = $("#card-number").val();
-    const cardName = $("#card-name").val();
-    const cardCvv = $("#card-cvv").val();
-    const cardExp = $("#card-exp").val();
-
-    const cardNumberRX = /^\d{16}$/;
-    const cardNameRX = /^[a-zA-Z ]+$/;
-    const cardCvvRX = /^\d{3}$/;
-    const cardExpRX = /^\d{4}$/;
-
-    const cardNumberTest = cardNumberRX.test(cardNumber);
-    const cardNameTest = cardNameRX.test(cardName);
-    const cardCvvTest = cardCvvRX.test(cardCvv);
-    const cardExpTest = cardExpRX.test(cardExp);
-
     if (!cardNumberTest) {
       return alert("Card number not valid");
-    }
-    if (!cardNameTest) {
-      return alert("Card name not valid");
     }
     if (!cardCvvTest) {
       return alert("Card cvv not valid");
     }
-    if (!cardExpTest) {
+    if (!cardExpYearTest) {
+      return alert("Card exp not valid");
+    }
+    if (!cardExpMonthTest) {
       return alert("Card exp not valid");
     }
   
     //If form submission successful
-    if(cardNumberTest  && cardNameTest && cardCvvTest && cardExpTest){
+    if(lnameTest && fnameTest && emailTest && postalTest && cardNumberTest && cardCvvTest && cardExpYearTest && cardExpMonthTest) {
+      postPurchase(); 
+      emptyCart();
       return alert('Payement successful');
     }
   }
 
-  const payload = async () => {
-    const total = getTotalPrice();
-    const subtotal = getSubtotal();
-    const province = $("#province-select").val();
-    const name = $("#name").val();
-    const lastname = $("#lastname").val();
-    const email = $("#email").val();
-    const phone = $("#phone").val();
-    const postal = $("#postal").val();
-    const cardNumber = $("#card-number").val();
-    const cardName = $("#card-name").val();
-    const cardCvv = $("#card-cvv").val();
-    const cardExp = $("#card-exp").val();
-    const cartItemsPayload = JSON.parse(localStorage.getItem('cartItems'));
-    const payloadData = {
-      total,
-      subtotal,
-      province,
-      name,
-      lastname,
-      email,
-      phone,
-      postal,
-      cardNumber,
-      cardName,
-      cardCvv,
-      cardExp,
-      cartItemsPayload
-    }    
-    const postPayment = await axios.post(postPaymentURL, payloadData);
-    const result = await postPayment.data;
-    console.log(result);
-  }
-
   $("#submit-payment").on('click', (e) => {
     e.preventDefault();
-    validateForm();
-    validatePayment();
-    payload();
+    validateForm();       
   })
 }) 
