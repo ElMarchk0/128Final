@@ -103,6 +103,7 @@ $(document).ready(() => {
     })
   }
 
+  // Popluate items for checkout modal
   const displayItemsCheckOut = () => { 
     cartItems.forEach((item) => {
       $("#items-check").append(`        
@@ -119,7 +120,6 @@ $(document).ready(() => {
       `);
     })
   }
-  displayItemsCheckOut();
     
   //Add to Cart
   const addToCart = (item) => {    
@@ -129,6 +129,7 @@ $(document).ready(() => {
     displaySubtotal()
   }
 
+  // Empty cart
   const emptyCart = () => {
     $("#cart-items").empty();
     $("#items-check").empty();
@@ -143,6 +144,7 @@ $(document).ready(() => {
     emptyCart();
   })  
 
+  //Set the taxt Rate
   const getTotalPrice = () => {
     const subtotal = getSubtotal();
     let total = getSubtotal();
@@ -172,8 +174,8 @@ $(document).ready(() => {
     displayItemsCheckOut();
     getTotalPrice();    
   })
-  //Collect order info for json payload  
-   
+
+  //Collect order info for json payload and post to server  
   const postPurchase = async () => {
     const currency = "cad";
     const country = "ca";
@@ -218,19 +220,14 @@ $(document).ready(() => {
         postal: postal,
       }
     }
-    const res = await fetch(postPaymentURL, payload, {
-      method: 'POST',
-      mode: 'no-cors',
-      cache: 'no-cache',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(payload)
+    const formData = new FormData();
+    formData.set('submission', await JSON.stringify(payload));
+    const response = await fetch(postPaymentURL, {
+        method: "POST",
+        cache: 'no-cache',
+        body: formData,
     });
-    console.log(payload)
-    const data = res.json();
-    console.log(data);
+    console.log(response)
   }
     
   const validateForm = () => {
@@ -244,7 +241,7 @@ $(document).ready(() => {
     const cardCvv = $("#card-cvv").val();
     const expiry_month = $("#card-exp-month").val();
     const expiry_year = $("#card-exp-year").val();
-    
+        
     const nameRX = /[a-zA-Z]/;
     const emailRX = /(\w\.?)+@[\w\.-]+\.\w{2,4}/;
     const postalRX = /[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
@@ -252,6 +249,8 @@ $(document).ready(() => {
     const cardCvvRX = /\d{3}$/;
     const cardExpYearRX = /\d{4}$/;
     const cardExpMonthRX = /\d{2}$/;
+    const phoneRX = /\d{10}/;
+    const addressRX = /^.{3,}$/
 
     const fnameTest = nameRX.test(firstName);
     const lnameTest = nameRX.test(lastName);
@@ -261,7 +260,9 @@ $(document).ready(() => {
     const cardCvvTest = cardCvvRX.test(cardCvv);
     const cardExpYearTest = cardExpYearRX.test(expiry_year);
     const cardExpMonthTest = cardExpMonthRX.test(expiry_month);
-
+    const phoneTest = phoneRX.test(phone);
+    const addressTest = addressRX.test(address);
+        
     if (!fnameTest) {
       return alert("Name not valid");
     }
@@ -286,9 +287,12 @@ $(document).ready(() => {
     if (!cardExpMonthTest) {
       return alert("Card exp not valid");
     }
+    if (!phoneTest) {
+      return alert("Card exp not valid");
+    }
   
     //If form submission successful
-    if(lnameTest && fnameTest && emailTest && postalTest && cardNumberTest && cardCvvTest && cardExpYearTest && cardExpMonthTest) {
+    if(lnameTest && fnameTest && emailTest && postalTest && cardNumberTest && cardCvvTest && cardExpYearTest && cardExpMonthTest && phoneTest && addressTest) {
       postPurchase(); 
       emptyCart();
       return alert('Payement successful');
