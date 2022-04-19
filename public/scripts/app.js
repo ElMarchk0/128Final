@@ -11,7 +11,6 @@ $(document).ready(() => {
   const getProducts = async() => {
     const res = await axios.get(fakeStoreApi);
     const data = await res.data;
-    console.log(data);
     return data;
   }
 
@@ -83,7 +82,6 @@ $(document).ready(() => {
     cartItems.forEach((item) => {
       subtotal += item.price;
     })
-    console.log(subtotal)
     return subtotal;
   }
 
@@ -96,7 +94,6 @@ $(document).ready(() => {
   if (cartItems === null) {  
     cartItems = [];
   } else {
-    console.log(cartItems);
     cartItems.forEach((cartItem) => {
       createCartItem(cartItem);
       displaySubtotal();
@@ -150,15 +147,15 @@ $(document).ready(() => {
     let total = getSubtotal();
     $("#totalPrice").text(`Total: $${total.toFixed(2)}`);
     $("#province-select").on('change', () => {
-      if ($("#province-select").val() === "Ontario")  {
+      if ($("#province-select").val() === "ON")  {
         total = subtotal * 1.13;
-      } else if ($("#province-select").val() === "Quebec") {
+      } else if ($("#province-select").val() === "QC") {
         total = subtotal * 1.1475;
-      } else if($("#province-select").val() === "British Columbia" || $("#province-select").val() === "Manitoba") {
+      } else if($("#province-select").val() === "BC" || $("#province-select").val() === "MB") {
         total = subtotal * 1.12;
-      } else if($("#province-select").val() === "Yukon" || $("#province-select").val() === "North West Territories" || $("#province-select").val() === "Nunavut") {
+      } else if($("#province-select").val() === "YK" || $("#province-select").val() === "NW" || $("#province-select").val() === "NU") {
         total = subtotal * 1.05;
-      } else if($("#province-select").val() === "Saskatchewan") {
+      } else if($("#province-select").val() === "SA") {
         total = subtotal * 1.11;
       } else {
         total = subtotal * 1.15;
