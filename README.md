@@ -1,4 +1,4 @@
-# 128FInal
+# 128Final
 Final project for Web Scripting at Camosun College. This a mock sales funnel using the f
 
 To set install dependencies:
