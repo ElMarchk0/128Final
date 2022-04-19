@@ -1,13 +1,13 @@
 # 128FInal
-Final project for ICS128 at Camosun
+Final project for Web Scripting at Camosun College. This a mock sales funnel using the f
 
-To set install dependacies
+To set install dependencies:
 > npm i
 
-To run locally
+How to run locally:
 > npm run start
 
-To run with hot reload
+How to run with hot reload:
 > npm run start-dev
 
 Goto
