@@ -1,10 +1,4 @@
 $(document).ready(() => {
-  $(function(){
-    $('#myModal').on('shown.bs.modal', function () {
-       $('#modal-content').focus()
-    });
- });
-  
   const fakeStoreApi = 'https://fakestoreapi.com/products';
   const postPaymentURL = 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/';
   
@@ -55,8 +49,7 @@ $(document).ready(() => {
           <div class="col-md-9">
             <h4>${item.title}</h4>
             <p>${item.description}</p>
-            <p id="price">Price: ${item.price}</p>
-            
+            <p id="price">Price: ${item.price}</p>            
             <button id="delete-btn" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i>Delete</button>
           </div>
         </div>
@@ -64,6 +57,7 @@ $(document).ready(() => {
     `;  
     $("#cart-items").append(cartItem);
     
+    // Create delete buttons
     const deleteBtns = document.querySelectorAll('#delete-btn');
     deleteBtns.forEach((btn, index) => {
       btn.addEventListener('click', (e) => {
