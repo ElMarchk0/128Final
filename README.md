@@ -1,5 +1,5 @@
 # 128Final
-Final project for Web Scripting at Camosun College.
+Final project for Web Scripting at Camosun College. This is a mock sales funnel built with jquery and bootstrap.
 
 How to install dependencies:
 > npm i
