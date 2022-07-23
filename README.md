@@ -1,7 +1,7 @@
 # 128Final
-Final project for Web Scripting at Camosun College. This a mock sales funnel using the f
+Final project for Web Scripting at Camosun College.
 
-To set install dependencies:
+How to install dependencies:
 > npm i
 
 How to run locally:
